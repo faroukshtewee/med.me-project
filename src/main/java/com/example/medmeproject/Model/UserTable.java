@@ -1,42 +1,48 @@
-package com.example.medmeproject.Dto;
+package com.example.medmeproject.Model;
+
+
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class User {
-    private String id;
-    private String firstName;
-    private String lastName;
-    private String email;
-    private String phoneNumber;
-    private LocalDate birthDate;
-    private String age;
-    private String address;
-    private String password;
-    private String gender;
-    private String role;
-    private String healthFund;
-    private String identityCard;
-    private  List<Appointment>appointments=new ArrayList<Appointment>();
-    private List<Clinic> clinics=new ArrayList<Clinic>();
-    public User() {
-    }
 
-    public User(String id, String firstName, String lastName, String email, String phoneNumber, LocalDate birthDate, String address, String password, String gender, String role, String healthFund, String identityCard) {
-        this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.phoneNumber = phoneNumber;
-        this.birthDate = birthDate;
-        this.address = address;
-        this.password = password;
-        this.gender = gender;
-        this.role = role;
-        this.healthFund = healthFund;
-        this.identityCard = identityCard;
-    }
+@Document(collection = "UserTable")
+public class UserTable {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private String id;
+    @Field("firstName")
+    private String firstName;
+    @Field("lastName")
+    private String lastName;
+    @Field("email")
+    private String email;
+    @Field("phoneNumber")
+    private String phoneNumber;
+    @Field("birthDate")
+    private LocalDate birthDate;
+    @Field("age")
+    private String age;
+    @Field("address")
+    private String address;
+    @Field("password")
+    private String password;
+    @Field("gender")
+    private String gender;
+    @Field("role")
+    private String role;
+    @Field("healthFund")
+    private String healthFund;
+    @Field("identityCard")
+    private String identityCard;
+    private List<AppointmentTable> appointments=new ArrayList<AppointmentTable>();
+    private List<ClinicTable> clinics=new ArrayList<ClinicTable>();
 
     public String getId() {
         return id;
@@ -134,22 +140,6 @@ public class User {
         this.healthFund = healthFund;
     }
 
-    public List<Appointment> getAppointments() {
-        return appointments;
-    }
-
-    public void setAppointments(List<Appointment> appointments) {
-        this.appointments = appointments;
-    }
-
-    public List<Clinic> getClinics() {
-        return clinics;
-    }
-
-    public void setClinics(List<Clinic> clinics) {
-        this.clinics = clinics;
-    }
-
     public String getIdentityCard() {
         return identityCard;
     }
@@ -158,25 +148,19 @@ public class User {
         this.identityCard = identityCard;
     }
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", email='" + email + '\'' +
-                ", phoneNumber='" + phoneNumber + '\'' +
-                ", birthDate='" + birthDate + '\'' +
-                ", age='" + age + '\'' +
-                ", address='" + address + '\'' +
-                ", password='" + password + '\'' +
-                ", gender='" + gender + '\'' +
-                ", role='" + role + '\'' +
-                ", healthFund='" + healthFund + '\'' +
-                ", appointments=" + appointments +
-                ", clinics=" + clinics +
-                '}';
+    public List<AppointmentTable> getAppointments() {
+        return appointments;
     }
 
+    public void setAppointments(List<AppointmentTable> appointments) {
+        this.appointments = appointments;
+    }
 
+    public List<ClinicTable> getClinics() {
+        return clinics;
+    }
+
+    public void setClinics(List<ClinicTable> clinics) {
+        this.clinics = clinics;
+    }
 }

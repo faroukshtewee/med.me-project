@@ -9,8 +9,8 @@ public class Secretary extends User {
     public Secretary() {
     }
 
-    public Secretary(Long id, String firstName, String lastName, String email, String phoneNumber, LocalDate birthDate, String age, String address, String password, String gender, String role, String healthFund, String identityCard, boolean mainSecretary, Integer yearsOfExperience) {
-        super(id, firstName, lastName, email, phoneNumber, birthDate, age, address, password, gender, role, healthFund, identityCard);
+    public Secretary(String id, String firstName, String lastName, String email, String phoneNumber, LocalDate birthDate, String age, String address, String password, String gender, String role, String healthFund, String identityCard, boolean mainSecretary, Integer yearsOfExperience) {
+        super(id, firstName, lastName, email, phoneNumber, birthDate, address, password, gender, role, healthFund, identityCard);
         this.mainSecretary = mainSecretary;
         this.yearsOfExperience = yearsOfExperience;
     }

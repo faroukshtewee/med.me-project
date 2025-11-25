@@ -1,22 +1,24 @@
-package com.example.medmeproject.Dto;
+package com.example.medmeproject.Model;
+
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.time.LocalDate;
 import java.util.List;
 
-public class Clinic{
+@Document(collection ="ClinicTable")
+public class ClinicTable {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
+    @Field("clinicAddress")
     private String clinicAddress;
+    @Field("clinicPhoneNumber")
     private String clinicPhoneNumber;
     private List<LocalDate> listClinicSchedule;
-
-    public Clinic() {
-    }
-
-    public Clinic(String id, String clinicAddress, String clinicPhoneNumber) {
-        this.id = id;
-        this.clinicAddress = clinicAddress;
-        this.clinicPhoneNumber = clinicPhoneNumber;
-    }
 
     public String getId() {
         return id;
@@ -48,15 +50,5 @@ public class Clinic{
 
     public void setListClinicSchedule(List<LocalDate> listClinicSchedule) {
         this.listClinicSchedule = listClinicSchedule;
-    }
-
-    @Override
-    public String toString() {
-        return "Clinic{" +
-                "id=" + id +
-                ", clinicAddress='" + clinicAddress + '\'' +
-                ", clinicPhoneNumber='" + clinicPhoneNumber + '\'' +
-                ", listClinicSchedule=" + listClinicSchedule +
-                '}';
     }
 }

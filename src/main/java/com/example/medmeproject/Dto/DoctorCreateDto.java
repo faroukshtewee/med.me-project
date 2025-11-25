@@ -5,7 +5,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.*;
 
 public class DoctorCreateDto extends UserCreateDto{
-    public enum Specialization {Cardiolog, Orthopedics, Pediatrics, Neurology, Dermatology,General}
+    public enum Specialization {Cardiolog , Orthopedics, Pediatrics, Neurology, Dermatology,General}
     @NotNull(message = "specialization cannot be null")
     @Enumerated(EnumType.STRING)
     private Specialization  specialization;

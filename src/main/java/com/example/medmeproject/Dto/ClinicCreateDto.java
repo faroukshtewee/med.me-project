@@ -6,7 +6,7 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
 public class ClinicCreateDto {
-    private Long id;
+    private String id;
     @NotBlank(message = "Clinic Address cannot be empty.")
     @Size(min = 10, max = 255, message = "Clinic Address length is invalid should be between 10 and 255 chars.")
     private String clinicAddress;
@@ -19,17 +19,17 @@ public class ClinicCreateDto {
     public ClinicCreateDto() {
     }
 
-    public ClinicCreateDto(Long id, String clinicAddress, String clinicPhoneNumber) {
+    public ClinicCreateDto(String id, String clinicAddress, String clinicPhoneNumber) {
         this.id = id;
         this.clinicAddress = clinicAddress;
         this.clinicPhoneNumber = clinicPhoneNumber;
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 

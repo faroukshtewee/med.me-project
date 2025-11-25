@@ -1,18 +1,22 @@
 package com.example.medmeproject.Dto;
 
+import com.example.medmeproject.Model.AppointmentTable;
+
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class Patient extends User {
     private LocalDate favoriteDate;
-    private Set<Long> appointmentIds = new HashSet<Long>();
+    private List<Appointment> appointments = new ArrayList<Appointment>();
 
     public Patient() {
     }
 
-    public Patient(Long id, String firstName, String lastName, String email, String phoneNumber, LocalDate birthDate, String age, String address, String password, String gender, String role, String healthFund, String identityCard, LocalDate favoriteDate) {
-        super(id, firstName, lastName, email, phoneNumber, birthDate, age, address, password, gender, role, healthFund, identityCard);
+    public Patient(String id, String firstName, String lastName, String email, String phoneNumber, LocalDate birthDate, String age, String address, String password, String gender, String role, String healthFund, String identityCard, LocalDate favoriteDate) {
+        super(id, firstName, lastName, email, phoneNumber, birthDate, address, password, gender, role, healthFund, identityCard);
         this.favoriteDate = favoriteDate;
     }
 
@@ -24,11 +28,11 @@ public class Patient extends User {
         this.favoriteDate = favoriteDate;
     }
 
-    public Set<Long> getAppointmentIds() {
-        return appointmentIds;
+    public List<Appointment> getAppointmentIds() {
+        return appointments;
     }
 
-    public void setAppointmentIds(Set<Long> appointmentIds) {
-        this.appointmentIds = appointmentIds;
+    public void setAppointmentIds(List<Appointment> appointmentIds) {
+        this.appointments = appointmentIds;
     }
 }

@@ -1,35 +1,37 @@
-package com.example.medmeproject.Dto;
+package com.example.medmeproject.Model;
+
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-public class Appointment {
+@Document(collection ="AppointmentTable")
+public class AppointmentTable {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String Id;
-    private String IdDoctor;
-    private String idPateint;
+    @Field("IdDoctor")
+    private Long IdDoctor;
+    @Field("idPateint")
+    private Long idPateint;
+    @Field("status")
     private String status;
+    @Field("createdBy")
     private String createdBy;
+    @Field("duration")
     private String duration;
+    @Field("appointmentDate")
     private LocalDate appointmentDate;
+    @Field("appointmentTime")
     private LocalTime appointmentTime;
+    @Field("priority")
     private String priority;
+    @Field("notes")
     private String notes;
-
-    public Appointment() {
-    }
-
-    public Appointment(String id, String idDoctor, String idPateint, String status, String createdBy, String duration, LocalDate appointmentDate, LocalTime appointmentTime, String priority, String notes) {
-        Id = id;
-        IdDoctor = idDoctor;
-        this.idPateint = idPateint;
-        this.status = status;
-        this.createdBy = createdBy;
-        this.duration = duration;
-        this.appointmentDate = appointmentDate;
-        this.appointmentTime = appointmentTime;
-        this.priority = priority;
-        this.notes = notes;
-    }
 
     public String getId() {
         return Id;
@@ -39,19 +41,19 @@ public class Appointment {
         Id = id;
     }
 
-    public String getIdDoctor() {
+    public Long getIdDoctor() {
         return IdDoctor;
     }
 
-    public void setIdDoctor(String idDoctor) {
+    public void setIdDoctor(Long idDoctor) {
         IdDoctor = idDoctor;
     }
 
-    public String getIdPateint() {
+    public Long getIdPateint() {
         return idPateint;
     }
 
-    public void setIdPateint(String idPateint) {
+    public void setIdPateint(Long idPateint) {
         this.idPateint = idPateint;
     }
 
@@ -109,21 +111,5 @@ public class Appointment {
 
     public void setNotes(String notes) {
         this.notes = notes;
-    }
-
-    @Override
-    public String toString() {
-        return "Appointment{" +
-                "Id=" + Id +
-                ", IdDoctor=" + IdDoctor +
-                ", idPateint=" + idPateint +
-                ", status='" + status + '\'' +
-                ", createdBy='" + createdBy + '\'' +
-                ", duration='" + duration + '\'' +
-                ", appointmentDate=" + appointmentDate +
-                ", appointmentTime=" + appointmentTime +
-                ", priority='" + priority + '\'' +
-                ", notes='" + notes + '\'' +
-                '}';
     }
 }

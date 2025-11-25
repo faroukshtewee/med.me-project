@@ -39,11 +39,11 @@ public class AppointmentCreateDto {
         CANCELLED
     }
 
-    private Long Id;
+    private String Id;
     @NotNull(message = "Doctor Id cannot be null")
-    private Long IdDoctor;
+    private String IdDoctor;
     @NotNull(message = "Patient Id cannot be null")
-    private Long idPateint;
+    private String idPateint;
     @NotNull(message = "status cannot be null")
     @Enumerated(EnumType.STRING)
     private Status status;
@@ -70,7 +70,7 @@ public class AppointmentCreateDto {
     public AppointmentCreateDto() {
     }
 
-    public AppointmentCreateDto(Long id, Long idDoctor, Long idPateint, Status status, String createdBy, Duration duration, LocalDate appointmentDate, LocalTime appointmentTime, Priority priority, String notes) {
+    public AppointmentCreateDto(String id, String idDoctor, String idPateint, Status status, String createdBy, Duration duration, LocalDate appointmentDate, LocalTime appointmentTime, Priority priority, String notes) {
         Id = id;
         IdDoctor = idDoctor;
         this.idPateint = idPateint;
@@ -83,27 +83,27 @@ public class AppointmentCreateDto {
         this.notes = notes;
     }
 
-    public Long getId() {
+    public String getId() {
         return Id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         Id = id;
     }
 
-    public Long getIdDoctor() {
+    public String getIdDoctor() {
         return IdDoctor;
     }
 
-    public void setIdDoctor(Long idDoctor) {
+    public void setIdDoctor(String idDoctor) {
         IdDoctor = idDoctor;
     }
 
-    public Long getIdPateint() {
+    public String getIdPateint() {
         return idPateint;
     }
 
-    public void setIdPateint(Long idPateint) {
+    public void setIdPateint(String idPateint) {
         this.idPateint = idPateint;
     }
 
