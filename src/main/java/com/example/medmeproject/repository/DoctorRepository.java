@@ -12,5 +12,4 @@ public interface DoctorRepository extends MongoRepository<DoctorTable,String> {
     List<DoctorTable> getDoctorByFirstName(String firstName);
     List<DoctorTable> getDoctorByLastName(String lastName);
     List<DoctorTable> getDoctorByLicenseNumber(String licenseNumber);
-
-    }
+}

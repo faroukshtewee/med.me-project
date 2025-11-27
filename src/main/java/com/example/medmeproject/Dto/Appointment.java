@@ -6,7 +6,7 @@ import java.time.LocalTime;
 public class Appointment {
     private String Id;
     private String IdDoctor;
-    private String idPateint;
+    private String idPatient;
     private String status;
     private String createdBy;
     private String duration;
@@ -18,10 +18,10 @@ public class Appointment {
     public Appointment() {
     }
 
-    public Appointment(String id, String idDoctor, String idPateint, String status, String createdBy, String duration, LocalDate appointmentDate, LocalTime appointmentTime, String priority, String notes) {
+    public Appointment(String id, String idDoctor, String idPatient, String status, String createdBy, String duration, LocalDate appointmentDate, LocalTime appointmentTime, String priority, String notes) {
         Id = id;
         IdDoctor = idDoctor;
-        this.idPateint = idPateint;
+        this.idPatient = idPatient;
         this.status = status;
         this.createdBy = createdBy;
         this.duration = duration;
@@ -47,12 +47,12 @@ public class Appointment {
         IdDoctor = idDoctor;
     }
 
-    public String getIdPateint() {
-        return idPateint;
+    public String getIdPatient() {
+        return idPatient;
     }
 
-    public void setIdPateint(String idPateint) {
-        this.idPateint = idPateint;
+    public void setIdPatient(String idPatient) {
+        this.idPatient = idPatient;
     }
 
     public String getStatus() {
@@ -116,7 +116,7 @@ public class Appointment {
         return "Appointment{" +
                 "Id=" + Id +
                 ", IdDoctor=" + IdDoctor +
-                ", idPateint=" + idPateint +
+                ", idPatient=" + idPatient +
                 ", status='" + status + '\'' +
                 ", createdBy='" + createdBy + '\'' +
                 ", duration='" + duration + '\'' +

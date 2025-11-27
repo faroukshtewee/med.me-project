@@ -11,7 +11,7 @@ public interface SecretaryRepository extends MongoRepository<SecretaryTable,Stri
 
     SecretaryTable getSecretaryByIdentityCard(String identityCard);
 
-    List<SecretaryTable> getSecretaryByFirstName(String keyword);
+    List<SecretaryTable> getSecretaryByFirstName(String firstName);
 
-    List<SecretaryTable> getSecretaryByLastName(String keyword);
+    List<SecretaryTable> getSecretaryByLastName(String lastName);
 }

@@ -7,11 +7,8 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/doctor")
@@ -22,7 +19,7 @@ public class DoctorController {
 
     @GetMapping("")
     public List<DoctorTable> getAllDoctors(){
-        return doctorService.getAllDoctors();
+        return doctorService.fetchDoctors();
     }
 
     @PostMapping("")
@@ -73,5 +70,9 @@ public class DoctorController {
     @GetMapping("/specializations")
     public List<String> getSpecializations() {
         return doctorService.getSpecializations();
+    }
+    @GetMapping("/age-statistics")
+    public Map<String, Object> getDoctorAgeStatistics(){
+        return doctorService.getDoctorAgeStatistics();
     }
 }

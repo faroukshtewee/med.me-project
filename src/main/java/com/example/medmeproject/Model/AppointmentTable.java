@@ -15,9 +15,9 @@ public class AppointmentTable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String Id;
     @Field("IdDoctor")
-    private Long IdDoctor;
-    @Field("idPateint")
-    private Long idPateint;
+    private String idDoctor;
+    @Field("idPatient")
+    private String idPatient;
     @Field("status")
     private String status;
     @Field("createdBy")
@@ -41,20 +41,20 @@ public class AppointmentTable {
         Id = id;
     }
 
-    public Long getIdDoctor() {
-        return IdDoctor;
+    public String getIdDoctor() {
+        return idDoctor;
     }
 
-    public void setIdDoctor(Long idDoctor) {
-        IdDoctor = idDoctor;
+    public void setIdDoctor(String idDoctor) {
+        this.idDoctor = idDoctor;
     }
 
-    public Long getIdPateint() {
-        return idPateint;
+    public String getIdPatient() {
+        return idPatient;
     }
 
-    public void setIdPateint(Long idPateint) {
-        this.idPateint = idPateint;
+    public void setIdPatient(String idPatient) {
+        this.idPatient = idPatient;
     }
 
     public String getStatus() {
@@ -112,4 +112,6 @@ public class AppointmentTable {
     public void setNotes(String notes) {
         this.notes = notes;
     }
+
+
 }
