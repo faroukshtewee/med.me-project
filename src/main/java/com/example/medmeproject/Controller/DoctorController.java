@@ -1,12 +1,14 @@
 package com.example.medmeproject.Controller;
 
 import com.example.medmeproject.Dto.DoctorCreateDto;
+import com.example.medmeproject.Dto.TimeSlot;
 import com.example.medmeproject.Model.DoctorTable;
 import com.example.medmeproject.Service.DoctorService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
@@ -74,5 +76,9 @@ public class DoctorController {
     @GetMapping("/age-statistics")
     public Map<String, Object> getDoctorAgeStatistics(){
         return doctorService.getDoctorAgeStatistics();
+    }
+    @PostMapping("/fill-doctor-schedule/{id}")
+    public DoctorTable fillDoctorSchedule(@RequestParam String doctorId, @RequestParam Map<LocalDate, List<TimeSlot>> newSchedule) {
+        return doctorService.fillDoctorSchedule(doctorId, newSchedule);
     }
 }

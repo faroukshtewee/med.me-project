@@ -35,33 +35,33 @@ public class AppointmentController {
         return appointmentService.updateAppointment(id,updateAppointment);
     }
     @GetMapping("/search-id-doctor/{id}")
-    public AppointmentTable searchAppointmentByIdDoctor(@PathVariable String idDoctor){
+    public List<AppointmentTable> searchAppointmentByIdDoctor(@PathVariable String idDoctor){
         return appointmentService.searchAppointmentByIdDoctor(idDoctor);
     }
     @GetMapping("/search-id-patient/{id}")
-    public AppointmentTable searchAppointmentByIdPatient(@PathVariable String idPatient){
+    public List<AppointmentTable> searchAppointmentByIdPatient(@PathVariable String idPatient){
         return appointmentService.searchAppointmentByIdPatient(idPatient);
     }
     @GetMapping("/search-status/{status}")
-    public AppointmentTable searchAppointmentByStatus(@PathVariable String status){
+    public List<AppointmentTable> searchAppointmentByStatus(@PathVariable String status){
         return appointmentService.searchAppointmentByStatus(status);
     }
     @GetMapping("/search-created-by/{createdBy}")
-    public AppointmentTable searchAppointmentByCreatedBy(@PathVariable String createdBy){
+    public List<AppointmentTable> searchAppointmentByCreatedBy(@PathVariable String createdBy){
         return appointmentService.searchAppointmentByCreatedBy(createdBy);
     }
     @GetMapping("/search-duration/{duration}")
-    public AppointmentTable searchAppointmentByDuration(@PathVariable String duration){
+    public List<AppointmentTable> searchAppointmentByDuration(@PathVariable String duration){
         return appointmentService.searchAppointmentByDuration(duration);
 
     }
     @GetMapping("/search-appointment-date/{appointmentDate}")
-    public AppointmentTable searchAppointmentByAppointmentDate(@PathVariable LocalDate appointmentDate){
+    public List<AppointmentTable> searchAppointmentByAppointmentDate(@PathVariable LocalDate appointmentDate){
         return appointmentService.searchAppointmentByAppointmentDate(appointmentDate);
 
     }
     @GetMapping("/search-priority/{priority}")
-    public AppointmentTable searchAppointmentByPriority(@PathVariable String priority){
+    public List<AppointmentTable> searchAppointmentByPriority(@PathVariable String priority){
         return appointmentService.searchAppointmentByPriority(priority);
 
     }

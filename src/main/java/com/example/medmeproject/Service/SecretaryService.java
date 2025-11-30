@@ -2,6 +2,7 @@ package com.example.medmeproject.Service;
 
 import com.example.medmeproject.Dto.DoctorCreateDto;
 import com.example.medmeproject.Dto.SecretaryCreateDto;
+import com.example.medmeproject.Exception.ResourceNotFoundException;
 import com.example.medmeproject.Model.SecretaryTable;
 import com.example.medmeproject.Model.SecretaryTable;
 import com.example.medmeproject.repository.SecretaryRepository;
@@ -38,7 +39,7 @@ public class SecretaryService extends UserService{
         return secretaryRepository.getSecretaryByIdentityCard(identityCard);
     }
     public SecretaryTable updateSecretary(String id, SecretaryCreateDto editSecretary){
-        SecretaryTable findSecretary = secretaryRepository.findById(id).orElse(null);
+        SecretaryTable findSecretary = secretaryRepository.findById(id) .orElseThrow(() -> new ResourceNotFoundException("Secretary not found with ID: " + id));
         modelMapper.map(editSecretary, findSecretary);
         findSecretary.setAge(calculateAge(editSecretary.getBirthDate().toString()).toString());
         secretaryRepository.save(findSecretary);

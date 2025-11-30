@@ -4,19 +4,20 @@ import com.example.medmeproject.Model.AppointmentTable;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public interface AppointmentRepository extends MongoRepository<AppointmentTable,String> {
-    AppointmentTable getAppointmentByIdDoctor(String idDoctor);
+    List<AppointmentTable> getAppointmentByIdDoctor(String idDoctor);
 
-    AppointmentTable getAppointmentByIdPatient(String idPatient);
+    List<AppointmentTable> getAppointmentByIdPatient(String idPatient);
 
-    AppointmentTable getAppointmentByStatus(String status);
+    List<AppointmentTable> getAppointmentByStatus(String status);
 
-    AppointmentTable getAppointmentByCreatedBy(String createdBy);
+    List<AppointmentTable> getAppointmentByCreatedBy(String createdBy);
 
-    AppointmentTable getAppointmentByDuration(String duration);
+    List<AppointmentTable> getAppointmentByDuration(String duration);
 
-    AppointmentTable getAppointmentByAppointmentDate(LocalDate appointmentDate);
+    List<AppointmentTable> getAppointmentByAppointmentDate(LocalDate appointmentDate);
 
-    AppointmentTable getAppointmentByPriority(String priority);
+    List<AppointmentTable> getAppointmentByPriority(String priority);
 }

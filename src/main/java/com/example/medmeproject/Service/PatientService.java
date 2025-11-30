@@ -1,12 +1,14 @@
 package com.example.medmeproject.Service;
 
 import com.example.medmeproject.Dto.PatientCreateDto;
+import com.example.medmeproject.Exception.ResourceNotFoundException;
 import com.example.medmeproject.Model.PatientTable;
 import com.example.medmeproject.repository.PatientRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.management.RuntimeErrorException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -34,7 +36,7 @@ public class PatientService extends UserService{
         return patientRepository.getPatientByIdentityCard(identityCard);
     }
     public PatientTable updatePatient(String id,PatientCreateDto updatePatient){
-        PatientTable findPatient = patientRepository.findById(id).orElse(null);
+        PatientTable findPatient = patientRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Patient not found with ID: " + id));
         modelMapper.map(updatePatient, findPatient);
         findPatient.setAge(calculateAge(updatePatient.getBirthDate().toString()).toString());
         patientRepository.save(findPatient);
@@ -80,5 +82,12 @@ public class PatientService extends UserService{
         }
         results.put("totalPatients", stats.getCount());
         return results;
+    }
+    public void approvePatientRegistration(String id) throws Exception {
+        PatientTable patient = patientRepository.findById(id) .orElseThrow(() -> new ResourceNotFoundException("Patient not found with ID: " + id));
+        if(patient == null){
+            throw new Exception("patient doesn't exist");
+        }
+        patient.setApproved(true);
     }
 }

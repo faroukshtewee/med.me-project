@@ -1,6 +1,8 @@
 package com.example.medmeproject.Service;
 
 import com.example.medmeproject.Dto.DoctorCreateDto;
+import com.example.medmeproject.Dto.TimeSlot;
+import com.example.medmeproject.Exception.ResourceNotFoundException;
 import com.example.medmeproject.Model.DoctorTable;
 import com.example.medmeproject.Model.PatientTable;
 import com.example.medmeproject.repository.DoctorRepository;
@@ -8,6 +10,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -36,7 +39,7 @@ public class DoctorService extends UserService {
             return doctorRepository.getDoctorByIdentityCard(identityCard);
     }
     public DoctorTable updateDoctor(String id,DoctorCreateDto updateDoctor){
-        DoctorTable findDoctor = doctorRepository.findById(id).orElse(null);
+        DoctorTable findDoctor = doctorRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Doctor not found with ID: " + id));
         modelMapper.map(updateDoctor, findDoctor);
         findDoctor.setSpecialization(updateDoctor.getSpecialization().toString());
         findDoctor.setAge(calculateAge(updateDoctor.getBirthDate().toString()).toString());
@@ -111,6 +114,10 @@ public class DoctorService extends UserService {
         results.put("totalDoctors", stats.getCount());
         return results;
     }
-
+    public DoctorTable fillDoctorSchedule(String doctorId, Map<LocalDate, List<TimeSlot>> newSchedule) {
+        DoctorTable doctor = doctorRepository.findById(doctorId).orElseThrow(() -> new ResourceNotFoundException("Doctor not found with ID: " + doctorId));
+        doctor.setListSchedule(newSchedule);
+        return doctorRepository.save(doctor);
+    }
 
 }

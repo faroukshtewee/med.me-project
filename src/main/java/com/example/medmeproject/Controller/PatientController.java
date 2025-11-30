@@ -55,4 +55,8 @@ public class PatientController {
     public Map<String, Object> getPatientAgeStatistics(){
         return patientService.getPatientAgeStatistics();
     }
+    @PostMapping("/approve/{id}")
+    public void approvePatient(@PathVariable String id) throws Exception {
+        patientService.approvePatientRegistration(id);
+    }
 }

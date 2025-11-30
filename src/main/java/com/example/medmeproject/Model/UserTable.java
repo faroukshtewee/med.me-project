@@ -41,6 +41,8 @@ public class UserTable {
     private String healthFund;
     @Field("identityCard")
     private String identityCard;
+    @Field("authCode")
+    private String authCode;
     private List<AppointmentTable> appointments=new ArrayList<AppointmentTable>();
     private List<ClinicTable> clinics=new ArrayList<ClinicTable>();
 
@@ -162,5 +164,13 @@ public class UserTable {
 
     public void setClinics(List<ClinicTable> clinics) {
         this.clinics = clinics;
+    }
+
+    public String getAuthCode() {
+        return authCode;
+    }
+
+    public void setAuthCode(String authCode) {
+        this.authCode = authCode;
     }
 }

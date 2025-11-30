@@ -32,6 +32,10 @@ public class AppointmentTable {
     private String priority;
     @Field("notes")
     private String notes;
+    @Field("favoriteDate")
+    private LocalDate favoriteDate;
+    @Field("favoriteTime")
+    private LocalTime favoriteTime;
 
     public String getId() {
         return Id;
@@ -113,5 +117,19 @@ public class AppointmentTable {
         this.notes = notes;
     }
 
+    public LocalDate getFavoriteDate() {
+        return favoriteDate;
+    }
 
+    public void setFavoriteDate(LocalDate favoriteDate) {
+        this.favoriteDate = favoriteDate;
+    }
+
+    public LocalTime getFavoriteTime() {
+        return favoriteTime;
+    }
+
+    public void setFavoriteTime(LocalTime favoriteTime) {
+        this.favoriteTime = favoriteTime;
+    }
 }

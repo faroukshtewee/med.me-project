@@ -41,6 +41,11 @@ public class UserCreateDto {
     @Pattern(regexp = "^\\d{9}$", message = "Identity Card must be a 9-digit number.")
     private String identityCard;
 
+
+    @NotBlank(message = "Auth Code is required.")
+    @Size(min = 6, max = 6, message = "Auth Code length is invalid.")
+    private String authCode;
+
     public String getId() {
         return id;
     }
@@ -143,5 +148,13 @@ public class UserCreateDto {
 
     public void setIdentityCard(String identityCard) {
         this.identityCard = identityCard;
+    }
+
+    public String getAuthCode() {
+        return authCode;
+    }
+
+    public void setAuthCode(String authCode) {
+        this.authCode = authCode;
     }
 }

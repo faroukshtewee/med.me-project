@@ -66,7 +66,10 @@ public class AppointmentCreateDto {
     private Priority priority;
     @Size(max = 500,message = "Max notes should be 500 characters")
     private String notes;
-
+    @Pattern(regexp = "\\d{4}-\\d{2}-\\d{2}" ,message = "Appointment Date must be in (YYYY-MM-DD) format ")
+    private LocalDate favoriteDate;
+    @Pattern(regexp = "\\d{2}:\\d{2}" ,message = "Appointment Time must be in (HH:MM) format ")
+    private LocalTime favoriteTime;
     public AppointmentCreateDto() {
     }
 
@@ -163,4 +166,19 @@ public class AppointmentCreateDto {
         this.notes = notes;
     }
 
+    public LocalDate getFavoriteDate() {
+        return favoriteDate;
+    }
+
+    public void setFavoriteDate(LocalDate favoriteDate) {
+        this.favoriteDate = favoriteDate;
+    }
+
+    public LocalTime getFavoriteTime() {
+        return favoriteTime;
+    }
+
+    public void setFavoriteTime(LocalTime favoriteTime) {
+        this.favoriteTime = favoriteTime;
+    }
 }
