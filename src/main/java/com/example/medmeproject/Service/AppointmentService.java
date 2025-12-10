@@ -17,10 +17,8 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class AppointmentService {
@@ -49,6 +47,7 @@ public class AppointmentService {
         String patientId = appointment.getIdPateint();
         LocalTime favoriteTime = appointment.getFavoriteTime();
         LocalDate favoriteDate = appointment.getFavoriteDate();
+        int favoritePriority=appointment.getPriority().getValue();
         AppointmentTable appointmentTable = modelMapper.map(appointment, AppointmentTable.class);
         appointmentTable.setPriority(appointment.getPriority().toString());
         appointmentTable.setDuration(String.valueOf(appointment.getDuration().getMinutes()));
@@ -99,6 +98,7 @@ public class AppointmentService {
         favoriteDatesTable.setFavoriteTime(favoriteTime);
         favoriteDatesTable.setIdDoctor(doctorId);
         favoriteDatesTable.setIdPatient(patientId);
+        favoriteDatesTable.setPriority(favoritePriority);
         favoriteDatesRepository.save(favoriteDatesTable);
 
         Map<LocalDate, List<String>> doctorSlotsMap = doctor.getGeneratedSlotsByDate();
@@ -165,22 +165,30 @@ public class AppointmentService {
         appointmentRepository.deleteById(appointmentId);
         //return all rows eqyals to appointmentDate and appointmentStartTime
         List<FavoriteDatesTable> favoriteDatesList =favoriteDatesRepository.getAllFavoriteDates(appointmentDate,appointmentStartTime);
+        favoriteDatesList.sort(Comparator.comparingInt(FavoriteDatesTable::getPriority));
+
         if(!favoriteDatesList.isEmpty()) {
             for (FavoriteDatesTable element : favoriteDatesList) {
                 String doctId = element.getIdDoctor();
                 String patId = element.getIdPatient();
                 PatientTable patientTable = patientRepository.findById(patId).orElseThrow(() -> new ResourceNotFoundException("Patient not found with ID: " + patId));
                 DoctorTable doctorTable=doctorRepository.findById(doctId).orElseThrow(() -> new ResourceNotFoundException("Doctor not found with ID: " + doctId));
-                String message="\"Hello,\n" +
-                        "\n" +
-                        "We are pleased to inform you that a preferred appointment slot has just become available.\n" +
-                        "\n" +
-                        "The new availability is "+appointmentStartTime +" on "+ appointmentDate+ " with Dr."+doctorTable.getFirstName()+" "+doctorTable.getLastName() +".\n" +
-                        "\n" +
-                        "If you wish to secure this time, please confirm your choice by booking immediately through our system. This slot will be available on a first-come, first-served basis.\n" +
-                        "\n" +
-                        "Thank you.\"";
-                smsService.sendUpdateSms(patientTable.getIdentityCard(), message, patientTable.getPhoneNumber());
+//
+//                if(element.getPriority()==3){
+//
+//                }
+                if(doctId.equals(doctorId)){
+                    String message="\"Hello,\n" +
+                            "\n" +
+                            "We are pleased to inform you that a preferred appointment slot has just become available.\n" +
+                            "\n" +
+                            "The new availability is "+appointmentStartTime +" on "+ appointmentDate+ " with Dr."+doctorTable.getFirstName()+" "+doctorTable.getLastName() +".\n" +
+                            "\n" +
+                            "If you wish to secure this time, please confirm your choice by booking immediately through our system. This slot will be available on a first-come, first-served basis.\n" +
+                            "\n" +
+                            "Thank you.\"";
+                    smsService.sendUpdateSms(patientTable.getIdentityCard(), message, patientTable.getPhoneNumber());
+                }
 
             }
         }

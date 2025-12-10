@@ -18,7 +18,7 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    // --- 1. SSE Connection Endpoint (Used by React's EventSource) ---
+    // --- 1. SSE Connection Endpoint
     @GetMapping(path = "/subscribe", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public SseEmitter subscribe(@RequestParam String identityCard) {
         //identityCard types:
@@ -29,7 +29,8 @@ public class UserController {
         String sseKey;
         if(splitted.length == 1){
             //if patient
-            sseKey = splitted[0];        }
+            sseKey = splitted[0];
+        }
         //if doctor or secretary
         else{
             sseKey = splitted[1];

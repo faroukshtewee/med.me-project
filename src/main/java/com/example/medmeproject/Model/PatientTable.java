@@ -14,6 +14,7 @@ import java.util.Set;
 public class PatientTable extends UserTable{
     @Field("approved")
     private boolean approved=false;
+
     public boolean isApproved() {
         return approved;
     }

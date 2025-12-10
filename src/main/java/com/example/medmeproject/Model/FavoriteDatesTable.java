@@ -22,6 +22,8 @@ public class FavoriteDatesTable {
     private LocalDate favoriteDate;
     @Field("favoriteTime")
     private LocalTime favoriteTime;
+    @Field("priority")
+    private int priority;
 
     public String getId() {
         return Id;
@@ -61,5 +63,13 @@ public class FavoriteDatesTable {
 
     public void setFavoriteTime(LocalTime favoriteTime) {
         this.favoriteTime = favoriteTime;
+    }
+
+    public int getPriority() {
+        return priority;
+    }
+
+    public void setPriority(int priority) {
+        this.priority = priority;
     }
 }

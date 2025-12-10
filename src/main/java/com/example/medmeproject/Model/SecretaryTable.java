@@ -12,15 +12,6 @@ public class SecretaryTable extends UserTable {
     private boolean mainSecretary;
     @Field("yearsOfExperience")
     private Integer yearsOfExperience;
-
-    public List<AppointmentTable> getRequestToApprove() {
-        return requestToApprove;
-    }
-
-    public void setRequestToApprove(List<AppointmentTable> requestToApprove) {
-        this.requestToApprove = requestToApprove;
-    }
-
     private List<AppointmentTable> requestToApprove=new ArrayList<AppointmentTable>();
 
     public boolean isMainSecretary() {
@@ -37,5 +28,13 @@ public class SecretaryTable extends UserTable {
 
     public void setYearsOfExperience(Integer yearsOfExperience) {
         this.yearsOfExperience = yearsOfExperience;
+    }
+
+    public List<AppointmentTable> getRequestToApprove() {
+        return requestToApprove;
+    }
+
+    public void setRequestToApprove(List<AppointmentTable> requestToApprove) {
+        this.requestToApprove = requestToApprove;
     }
 }

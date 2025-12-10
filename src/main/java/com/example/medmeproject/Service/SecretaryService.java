@@ -56,7 +56,6 @@ public class SecretaryService extends UserService{
         Collections.sort(secretaryExperience, Comparator.comparingDouble(SecretaryTable::getYearsOfExperience));
         return secretaryExperience;
     }
-
     public List<SecretaryTable> searchSecretariesByFirstName(String keyword){
         List<SecretaryTable> Secretaries =getAllSecretaries();
         if (keyword == null || keyword.trim().isEmpty()) {

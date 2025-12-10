@@ -1,5 +1,6 @@
 package com.example.medmeproject.Model;
 
+import com.example.medmeproject.Dto.TimeSlot;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import org.springframework.data.annotation.Id;
@@ -8,6 +9,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 @Document(collection ="ClinicTable")
 public class ClinicTable {
@@ -18,7 +20,7 @@ public class ClinicTable {
     private String clinicAddress;
     @Field("clinicPhoneNumber")
     private String clinicPhoneNumber;
-    private List<LocalDate> listClinicSchedule;
+    private List<Map<LocalDate,List<TimeSlot>>> listClinicSchedule;
 
     public String getId() {
         return id;
@@ -44,11 +46,11 @@ public class ClinicTable {
         this.clinicPhoneNumber = clinicPhoneNumber;
     }
 
-    public List<LocalDate> getListClinicSchedule() {
+    public List<Map<LocalDate, List<TimeSlot>>> getListClinicSchedule() {
         return listClinicSchedule;
     }
 
-    public void setListClinicSchedule(List<LocalDate> listClinicSchedule) {
+    public void setListClinicSchedule(List<Map<LocalDate, List<TimeSlot>>> listClinicSchedule) {
         this.listClinicSchedule = listClinicSchedule;
     }
 }

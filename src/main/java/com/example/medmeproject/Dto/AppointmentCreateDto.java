@@ -16,7 +16,6 @@ public class AppointmentCreateDto {
         THIRTY_MINUTES(30),
         FORTY_FIVE_MINUTES(45),
         SIXTY_MINUTES(60);
-
         private final int minutes;
 
         Duration(int minutes) {
@@ -28,10 +27,20 @@ public class AppointmentCreateDto {
         }
     }
     public enum Priority {
-        LOW,
-        MEDIUM,
-        HIGH,
-        URGENT
+        URGENT(1),
+        HIGH(2),
+        MEDIUM(3),
+        LOW(4);
+
+        private final int value;
+
+        Priority(int value) {
+            this.value = value;
+        }
+
+        public int getValue() {
+            return value;
+        }
     }
     public enum Status {
         SCHEDULED,
