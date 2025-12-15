@@ -4,6 +4,6 @@ import com.example.medmeproject.Model.ClinicTable;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 public interface ClinicRepository extends MongoRepository<ClinicTable,String> {
-    ClinicTable findClinicByAddress(String clinicAddress);
-    ClinicTable findClinicByPhoneNumber(String clinicPhoneNumber);
+    ClinicTable findClinicByClinicAddress(String clinicAddress);
+    ClinicTable findClinicByClinicPhoneNumber(String clinicPhoneNumber);
 }

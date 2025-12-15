@@ -16,7 +16,6 @@ import java.util.List;
 public class AppointmentController {
     @Autowired
     AppointmentService appointmentService;
-
     @GetMapping("")
     public List<AppointmentTable> getAllAppointments(){
         return appointmentService.fetchAppointments();

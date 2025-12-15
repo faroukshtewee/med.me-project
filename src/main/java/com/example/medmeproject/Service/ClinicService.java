@@ -19,10 +19,10 @@ public class ClinicService {
 
 
     public ClinicTable searchClinicByAddress(String clinicAddress){
-        return clinicRepository.findClinicByAddress(clinicAddress);
+        return clinicRepository.findClinicByClinicAddress(clinicAddress);
     }
     public ClinicTable searchClinicByPhoneNumber(String clinicPhoneNumber){
-        return clinicRepository.findClinicByPhoneNumber(clinicPhoneNumber);
+        return clinicRepository.findClinicByClinicPhoneNumber(clinicPhoneNumber);
     }
     public ClinicTable fillListClinicSchedule(String id,List<Map<LocalDate, List<TimeSlot>>>  schedule){
         ClinicTable clinic= clinicRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Clinic not found with ID: " + id));
