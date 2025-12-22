@@ -26,6 +26,9 @@ public class UserService {
     @Autowired
     SmsService smsService;
 
+    //to remember the user in this session/logged in
+    private String userSession;
+
     //function to login user
     public boolean logIn(String identityCard){
         String []splitted=identityCard.split("-");
@@ -119,6 +122,7 @@ public class UserService {
                 if (patient != null && patient.isApproved()) {
                     authCode = patient.getAuthCode();
                     if (authCode.equals(code)) {
+                        userSession=splitted[0];
                         return true;
                     }
                 }
@@ -131,5 +135,13 @@ public class UserService {
         LocalDate localdateOfBirth = LocalDate.parse(dateOfBirth);;
         Period period = Period.between(localdateOfBirth, currentDate);
         return  period.getYears();
+    }
+
+    public String getUserSession() {
+        return userSession;
+    }
+
+    public void setUserSession(String userSession) {
+        this.userSession = userSession;
     }
 }
