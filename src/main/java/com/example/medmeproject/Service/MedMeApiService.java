@@ -905,52 +905,52 @@ public class MedMeApiService {
         System.out.println("Patient ID "+patientId);
         return patientId;
     }
-//    public String cancelAppointment(int id, String token, String user ,String appointmentId,String clientId) throws IOException, InterruptedException {
-//        String jsonBody = String.format("""
-//                {
-//                    "jsonrpc": "2.0",
-//                    "id": %d,
-//                    "cred": {
-//                        "token": "%s",
-//                        "user": "%s"
-//                    },
-//                    "method": "appointment.cancel_appointment_by_client",
-//                    "params": {
-//                        "appointment": {
-//                            "id": "%s"
-//                        },
-//                        "client": {
-//                            "clientID": "%s"
-//                        }
-//                    }
-//                }
-//                """, id, token, user,appointmentId,clientId);
-//        HttpClient client = HttpClient.newHttpClient();
-//
-//        HttpRequest request = HttpRequest.newBuilder()
-//                .uri(URI.create(" https://apiv2.gbooking.ru/rpc"))
-//                .header("Content-Type", "application/json")
-//                .POST(HttpRequest.BodyPublishers.ofString(jsonBody))
-//                .build();
-//        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-//        ObjectMapper mapper = new ObjectMapper();
-//        String patientId="";
-//
-//        try {
-//            JsonNode rootNode = mapper.readTree(response.body());
-//            JsonNode dataNode = rootNode.get("result").get("client");
-//            System.out.println("dataNode  "+dataNode);
-//            if (dataNode != null) {
-//                patientId = dataNode.get("id").asText();
-//            }
-//            else {
-//                patientId="patient not exist";
-//            }
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        System.out.println("Patient ID "+patientId);
-//        return patientId;
-//    }
+    public String cancelAppointment(int id, String token, String user ,String appointmentId,String clientId) throws IOException, InterruptedException {
+        String jsonBody = String.format("""
+                {
+                    "jsonrpc": "2.0",
+                    "id": %d,
+                    "cred": {
+                        "token": "%s",
+                        "user": "%s"
+                    },
+                    "method": "appointment.cancel_appointment_by_client",
+                    "params": {
+                        "appointment": {
+                            "id": "%s"
+                        },
+                        "client": {
+                            "clientID": "%s"
+                        }
+                    }
+                }
+                """, id, token, user,appointmentId,clientId);
+        HttpClient client = HttpClient.newHttpClient();
+
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(" https://apiv2.gbooking.ru/rpc"))
+                .header("Content-Type", "application/json")
+                .POST(HttpRequest.BodyPublishers.ofString(jsonBody))
+                .build();
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        ObjectMapper mapper = new ObjectMapper();
+        String patientId="";
+
+        try {
+            JsonNode rootNode = mapper.readTree(response.body());
+            JsonNode dataNode = rootNode.get("result").get("client");
+            System.out.println("dataNode  "+dataNode);
+            if (dataNode != null) {
+                patientId = dataNode.get("id").asText();
+            }
+            else {
+                patientId="patient not exist";
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        System.out.println("Patient ID "+patientId);
+        return patientId;
+    }
 }
