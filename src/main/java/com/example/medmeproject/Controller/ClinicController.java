@@ -15,17 +15,21 @@ import java.util.Map;
 @CrossOrigin
 public class ClinicController {
     @Autowired
-    ClinicService ClinicService;
+    ClinicService clinicService;
     @GetMapping("/{address}")
     public ClinicTable searchClinicByAddress(@PathVariable String clinicAddress){
-        return ClinicService.searchClinicByAddress(clinicAddress);
+        return clinicService.searchClinicByAddress(clinicAddress);
     }
     @GetMapping("/{phone-number}")
     public ClinicTable searchClinicByPhoneNumber(@PathVariable String clinicPhoneNumber){
-        return ClinicService.searchClinicByPhoneNumber(clinicPhoneNumber);
+        return clinicService.searchClinicByPhoneNumber(clinicPhoneNumber);
     }
     @PostMapping("/{fill-schedule}")
     public ClinicTable fillListClinicSchedule(@RequestParam  String id,@RequestParam List<Map<LocalDate,List<TimeSlot>>>  schedule) {
-        return ClinicService.fillListClinicSchedule(id, schedule);
+        return clinicService.fillListClinicSchedule(id, schedule);
+    }
+    @GetMapping("/all-clincs")
+    public List<ClinicTable> fetchAllClinics(){
+        return clinicService.fetchAllClinics();
     }
 }

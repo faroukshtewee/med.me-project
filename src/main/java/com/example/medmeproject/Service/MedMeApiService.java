@@ -1,9 +1,13 @@
 package com.example.medmeproject.Service;
 
+import com.example.medmeproject.Exception.ResourceNotFoundException;
+import com.example.medmeproject.Model.PatientTable;
+import com.example.medmeproject.repository.PatientRepository;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -12,11 +16,20 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalTime;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
 public class MedMeApiService {
+    @Autowired
+    PatientRepository patientRepository;
+
+    @Autowired
+    UserService userService;
+
     public  List<String> getBusinessesIds(int id, String token, String user, int networkId) throws IOException, InterruptedException {
         String jsonBody = String.format("""
                     {
@@ -51,7 +64,6 @@ public class MedMeApiService {
             JsonNode dataNode = rootNode.get("result");
             if (dataNode != null) {
                 JsonNode businesses = dataNode.get("businesses");
-                // Use readValue() to deserialize the JsonNode's content stream
                 businessList = mapper.readValue(businesses.traverse(), typeRef);
                 businessesIds = businessList.stream().map(businessMap -> (String) businessMap.get("businessID")).collect(Collectors.toList());
             }
@@ -60,9 +72,11 @@ public class MedMeApiService {
         }
         return businessesIds;
     }
-    public String searchBusinessesIdByName(int id, String token,String user, boolean skip,String deppartmentName,String workerSort, int networkId) throws IOException, InterruptedException {
+    public String searchBusinessesIdByName(int id, String token,String user, boolean skip,String department,String workerSort, int networkId) throws IOException, InterruptedException {
+        System.out.printf("Received From python searchBusinessesIdByName service: id: %s ,token: %s ,user: %s ,department: %s ,workerSort: %s ,networkId: %d",id,token,user,department,workerSort,networkId);
         ObjectMapper mapper = new ObjectMapper();
         List<String> businessesIds=getBusinessesIds( id,  token,  user,networkId);
+        String businessBoName = "";
         String businessName = "";
         String busId="";
         for (String businessId : businessesIds) {
@@ -97,10 +111,14 @@ public class MedMeApiService {
                 JsonNode rootNode = mapper.readTree(response.body());
                 JsonNode dataNode = rootNode.get("result").get("business");
                 if (dataNode != null) {
-                    businessName = dataNode.get("general_info").get("name").asText();
-                    System.out.println("businessName: " + businessName);
-                    String [] splitted=businessName.split("-");
-                    if(splitted[1].trim().equals(deppartmentName)){
+                    businessName = dataNode.get("general_info").get("name").asText().toLowerCase();
+                    businessBoName = dataNode.get("general_info").get("boName").asText().toLowerCase();
+                    System.out.println("businessBoName: " + businessBoName);
+                    if(businessBoName=="null"){
+                        businessBoName=businessName;
+                    }
+                    String [] splitted=businessBoName.split(" - ");
+                    if(splitted[1].trim().equals(department.toLowerCase())){
                         busId=businessId;
                         break;
                     }
@@ -108,7 +126,7 @@ public class MedMeApiService {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
+            System.out.println("busineesID: "+ busId);
         }
         return busId;
     }
@@ -272,6 +290,7 @@ public class MedMeApiService {
     }
 
     public List<Map<String, JsonNode>> getBusinessesTaxonomies(int id, String token, String user, String businessId, boolean skip,String workerSort) throws IOException, InterruptedException {
+
         String jsonBody = String.format("""
                     {
                         "jsonrpc": "2.0",
@@ -318,7 +337,7 @@ public class MedMeApiService {
                     if (timeTable != null && timeTable.isObject()) {
                         taxonomiesTimeWeekNode = timeTable.get("week");
                     }
-                    valueObject.put("alias", taxonomiesAliasNode);
+                    valueObject.put("alias", taxonomiesAliasNode.asText().toLowerCase());
                     valueObject.put("timetable", taxonomiesTimeWeekNode);
                     valueObject.put("extraId", taxonomiesExtraIdNode);
                     valueObject.put("siteId", taxonomiesSiteIdkNode);
@@ -380,15 +399,13 @@ public class MedMeApiService {
                     JsonNode idNode = resourceNode.get("id");
                     JsonNode name = resourceNode.get("name");
                     JsonNode surname = resourceNode.get("surname");
-                    String fullName=name.asText()+" "+ surname.asText();
+                    String fullName=name.asText().toLowerCase()+" "+ surname.asText().toLowerCase();
                     JsonNode taxonomies = resourceNode.get("taxonomies");
                     JsonNode timetable = resourceNode.get("timetable");
                     JsonNode taxonomiesTimeWeekNode = null;
                     if (timetable != null && timetable.isObject()) {
                         taxonomiesTimeWeekNode = timetable.get("week");
                     }
-//                    valueObject.put("name", name);
-//                    valueObject.put("surname", surname);
                     valueObject.put("fullName", fullName);
                     valueObject.put("timetable", taxonomiesTimeWeekNode);
                     valueObject.put("extraId", taxonomies);
@@ -411,8 +428,9 @@ public class MedMeApiService {
         return businessResources;
     }
 
-    public String searchTaxonomyIdInListTaxonomiesObject(String taxonomyName,int id, String token, String user, String businessId, boolean skip,String workerSort ) throws IOException, InterruptedException {
+    public  List<Map<String, String>> searchTaxonomyIdInListTaxonomiesObject(String taxonomyName,int id, String token, String user, String businessId, boolean skip,String workerSort ) throws IOException, InterruptedException {
         List<Map<String, JsonNode>> listTaxonomies=getBusinessesTaxonomies(id,token, user,businessId, skip, workerSort);
+        List<Map<String, String>> matches = new ArrayList<>();
         for (Map<String, JsonNode> resourceMap : listTaxonomies) {
             for (Map.Entry<String, JsonNode> entry : resourceMap.entrySet()) {
                 JsonNode valueObject = entry.getValue();
@@ -421,14 +439,16 @@ public class MedMeApiService {
                     aliasNode = valueObject.get("alias");
                 }
                 if (aliasNode != null && aliasNode.isTextual()) {
-                    if (aliasNode.asText().equals(taxonomyName)) {
-                        System.out.println("taxonomy: " + entry.getKey());
-                        return entry.getKey();
+                    if (aliasNode.asText().toLowerCase().contains(taxonomyName.toLowerCase())) {
+                        Map<String, String> match = new HashMap<>();
+                        match.put("taxonomyId", entry.getKey());
+                        match.put("taxonomyName", aliasNode.asText());
+                        matches.add(match);
                     }
                 }
             }
         }
-        return "";
+        return matches;
     }
     public int getDuration(String taxonomyId,int id, String token, String user, String businessId, boolean skip,String workerSort) throws IOException, InterruptedException {
         List<Map<String, JsonNode>> listTaxonomies = getBusinessesTaxonomies(id, token, user, businessId, skip, workerSort);
@@ -464,14 +484,14 @@ public class MedMeApiService {
                     fullNameNode = valueObject.get("fullName");
                 }
                 if (fullNameNode != null && fullNameNode.isTextual()  ) {
-                    if (fullNameNode.asText().equals(resourceName)) {
+                    if (resourceName.trim().toLowerCase().contains(fullNameNode.asText().trim().toLowerCase())) {
                         System.out.println("source: " + entry.getKey());
                         return entry.getKey();
                     }
                 }
             }
         }
-        return "";
+        return "resource: is null";
     }
     public JsonNode searchTaxonomyTimeTableInListTaxonomiesObject(String taxonomyId, List<Map<String, JsonNode>> listTaxonomies) {
         JsonNode taxonomy = null;
@@ -493,6 +513,13 @@ public class MedMeApiService {
     public List<Map<String, List<JsonNode>>> getCRACResourcesAndRooms(int id, String token, String user, String businessId, String timezone, String resourcesId,String taxonomies, String dateFrom, String dateTo,boolean skip,String workerSort ) throws IOException, InterruptedException {
         List<Map<String, List<JsonNode>>> dateCutSlotsList = new ArrayList<>();
         int duration =getDuration( taxonomies, id, token,  user,  businessId,skip, workerSort);
+        System.out.println("(getCRACResourcesAndRooms Service) duration: " +duration);
+        if(dateFrom.equals(dateTo)||dateTo.equals("")){
+            ZonedDateTime from = ZonedDateTime.parse(dateFrom);
+            ZonedDateTime toMidnight = from.plusDays(1).with(LocalTime.MIDNIGHT);
+            dateTo = toMidnight.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"));
+        }
+
         String jsonBody = String.format("""
         {
            "jsonrpc": "2.0",
@@ -539,7 +566,6 @@ public class MedMeApiService {
                 .build();
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
         ObjectMapper mapper = new ObjectMapper();
-        JsonNode slots = null;
         try {
             JsonNode rootNode = mapper.readTree(response.body());
             JsonNode dataNode = rootNode.get("result").get("slots");
@@ -577,12 +603,11 @@ public class MedMeApiService {
         return dateCutSlotsList;
     }
     public List<Map<String, String>> getFirstAvailableDay(int id, String token, String user, String businessId, String timezone, List<String> resourcesId,String taxonomies,boolean skip,String workerSort) throws IOException, InterruptedException {
-        List<Map<String, List<JsonNode>>> dateCutSlotsList = new ArrayList<>();
+
         int duration =getDuration( taxonomies, id, token,  user,  businessId,skip, workerSort);
         String resourcesArrayString = resourcesId.stream().map(resource -> "\"" + resource + "\"").collect(java.util.stream.Collectors.joining(", "));
         System.out.println("resourcesArrayString: " + resourcesArrayString);
         List<Map<String, String>> result = new ArrayList<Map<String, String>>();
-
         String jsonBody = String.format("""
                         {
                            "jsonrpc": "2.0",
@@ -618,7 +643,6 @@ public class MedMeApiService {
                 .build();
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
         ObjectMapper mapper = new ObjectMapper();
-        JsonNode slots = null;
         String resourceId="";
         String date="";
         String maxFreeMinutes="";
@@ -695,7 +719,6 @@ public class MedMeApiService {
                 .build();
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
         ObjectMapper mapper = new ObjectMapper();
-        JsonNode slots = null;
         String appointmentId="";
 
         try {
@@ -713,6 +736,19 @@ public class MedMeApiService {
         return appointmentId;
     }
     public String addPatient(int id, String token, String user,String businessId,String name,String surname,String country_code,String area_code,String number,String email ) throws IOException, InterruptedException {
+        PatientTable patient = patientRepository.getPatientByIdentityCard(userService.getUserSession());
+        String patientIdMedMeTable="";
+        String patientIdMedMe="";
+        if(patient!=null){
+            patientIdMedMeTable=patient.getPatientIdMedMe();
+            if(! patientIdMedMeTable.equals("")){
+                patientIdMedMe=getPatientId(id, token, user , patientIdMedMeTable);
+                if(!patientIdMedMe.equals("patient not exist") || !patientIdMedMe.equals("")){
+                    return  patientIdMedMe;
+                }
+
+            }
+        }
         String jsonBody = String.format("""
                      {
                         "jsonrpc":"2.0",
@@ -758,6 +794,11 @@ public class MedMeApiService {
             System.out.println("dataNode  "+dataNode);
             if (dataNode != null) {
                 patientId = dataNode.get("id").asText();
+                if(patient!=null){
+                    patient.setPatientIdMedMe(patientId);
+                    patientRepository.save(patient);
+                }
+
             }
 
         } catch (Exception e) {
@@ -766,7 +807,7 @@ public class MedMeApiService {
         System.out.println("addPatient "+patientId);
         return patientId;
     }
-    public String confirm(int id, String token, String user,String appointmentId,String clientId) throws IOException, InterruptedException {
+    public String confirm(int id, String token, String user,String appointmentId,String clientId,String datetime) throws IOException, InterruptedException {
         String jsonBody = String.format("""
                  {
                     "jsonrpc":"2.0",
@@ -803,6 +844,14 @@ public class MedMeApiService {
 
             if (dataNode != null) {
                 status = dataNode.get("status").asText();
+                PatientTable patient = patientRepository.getPatientByIdentityCard(userService.getUserSession());
+                Map<String, String> appointment=new HashMap<String,String>();
+                appointment.put(datetime,appointmentId);
+                if(patient != null){
+                    patient.getListMapAppointmentIdsMedMe().add(appointment);
+                    patientRepository.save(patient);
+                }
+
             }
 
         } catch (Exception e) {
@@ -811,4 +860,97 @@ public class MedMeApiService {
         System.out.println("addPatient "+status);
         return status;
     }
+    public String getPatientId(int id, String token, String user ,String clientId) throws IOException, InterruptedException {
+        String jsonBody = String.format("""
+                  {
+                      "jsonrpc": "2.0",
+                      "id": "%s",
+                      "cred": {
+                          "token": "%s",
+                          "user": "%s"
+                      },
+                      "method": "client.get_client",
+                      "params": {
+                          "client": {
+                              "id": "%s"
+                          }
+                      }
+                  }
+                """, id, token, user,clientId);
+        HttpClient client = HttpClient.newHttpClient();
+
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create("https://apiv2.med.me/rpc"))
+                .header("Content-Type", "application/json")
+                .POST(HttpRequest.BodyPublishers.ofString(jsonBody))
+                .build();
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        ObjectMapper mapper = new ObjectMapper();
+        String patientId="";
+
+        try {
+            JsonNode rootNode = mapper.readTree(response.body());
+            JsonNode dataNode = rootNode.get("result").get("client");
+            System.out.println("dataNode  "+dataNode);
+            if (dataNode != null) {
+                patientId = dataNode.get("id").asText();
+            }
+            else {
+                patientId="patient not exist";
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        System.out.println("Patient ID "+patientId);
+        return patientId;
+    }
+//    public String cancelAppointment(int id, String token, String user ,String appointmentId,String clientId) throws IOException, InterruptedException {
+//        String jsonBody = String.format("""
+//                {
+//                    "jsonrpc": "2.0",
+//                    "id": %d,
+//                    "cred": {
+//                        "token": "%s",
+//                        "user": "%s"
+//                    },
+//                    "method": "appointment.cancel_appointment_by_client",
+//                    "params": {
+//                        "appointment": {
+//                            "id": "%s"
+//                        },
+//                        "client": {
+//                            "clientID": "%s"
+//                        }
+//                    }
+//                }
+//                """, id, token, user,appointmentId,clientId);
+//        HttpClient client = HttpClient.newHttpClient();
+//
+//        HttpRequest request = HttpRequest.newBuilder()
+//                .uri(URI.create(" https://apiv2.gbooking.ru/rpc"))
+//                .header("Content-Type", "application/json")
+//                .POST(HttpRequest.BodyPublishers.ofString(jsonBody))
+//                .build();
+//        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+//        ObjectMapper mapper = new ObjectMapper();
+//        String patientId="";
+//
+//        try {
+//            JsonNode rootNode = mapper.readTree(response.body());
+//            JsonNode dataNode = rootNode.get("result").get("client");
+//            System.out.println("dataNode  "+dataNode);
+//            if (dataNode != null) {
+//                patientId = dataNode.get("id").asText();
+//            }
+//            else {
+//                patientId="patient not exist";
+//            }
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        System.out.println("Patient ID "+patientId);
+//        return patientId;
+//    }
 }
