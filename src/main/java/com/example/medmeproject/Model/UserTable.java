@@ -31,8 +31,6 @@ public class UserTable {
     private String age;
     @Field("address")
     private String address;
-    @Field("password")
-    private String password;
     @Field("gender")
     private String gender;
     @Field("role")
@@ -110,13 +108,6 @@ public class UserTable {
         this.address = address;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
 
     public String getGender() {
         return gender;

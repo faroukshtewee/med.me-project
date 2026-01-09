@@ -13,7 +13,6 @@ public class User {
     private LocalDate birthDate;
     private String age;
     private String address;
-    private String password;
     private String gender;
     private String role;
     private String healthFund;
@@ -23,7 +22,7 @@ public class User {
     public User() {
     }
 
-    public User(String id, String firstName, String lastName, String email, String phoneNumber, LocalDate birthDate, String address, String password, String gender, String role, String healthFund, String identityCard) {
+    public User(String id, String firstName, String lastName, String email, String phoneNumber, LocalDate birthDate, String address, String gender, String role, String healthFund, String identityCard) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -31,7 +30,6 @@ public class User {
         this.phoneNumber = phoneNumber;
         this.birthDate = birthDate;
         this.address = address;
-        this.password = password;
         this.gender = gender;
         this.role = role;
         this.healthFund = healthFund;
@@ -102,14 +100,6 @@ public class User {
         this.address = address;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
     public String getGender() {
         return gender;
     }
@@ -169,7 +159,6 @@ public class User {
                 ", birthDate='" + birthDate + '\'' +
                 ", age='" + age + '\'' +
                 ", address='" + address + '\'' +
-                ", password='" + password + '\'' +
                 ", gender='" + gender + '\'' +
                 ", role='" + role + '\'' +
                 ", healthFund='" + healthFund + '\'' +

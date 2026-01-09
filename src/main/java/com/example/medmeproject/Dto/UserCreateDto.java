@@ -28,8 +28,6 @@ public class UserCreateDto {
     @NotBlank(message = "Address cannot be empty.")
     @Size(min = 10, max = 255, message = "Address length is invalid should be between 10 and 255 chars.")
     private String address;
-    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[^a-zA-Z0-9\\s]).{8,20}$", message = "Password must be 8-20 chars long and include: uppercase, lowercase, number, and special character.")
-    private String password;
     @Pattern(regexp = "Male|Female", flags = Pattern.Flag.CASE_INSENSITIVE, message = "Gender must be Male or Female.")
     private String gender;
     @NotBlank(message = "Role must be specified.")
@@ -108,14 +106,6 @@ public class UserCreateDto {
 
     public void setAddress(String address) {
         this.address = address;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public String getGender() {

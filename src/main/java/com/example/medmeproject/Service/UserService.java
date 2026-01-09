@@ -27,7 +27,7 @@ public class UserService {
     SmsService smsService;
 
     //to remember the user in this session/logged in
-    private String userSession;
+    private String userSession="315123456";
 
     //function to login user
     public boolean logIn(String identityCard){

@@ -1,5 +1,6 @@
 package com.example.medmeproject.Model;
 
+import com.example.medmeproject.Dto.AppointmentApiData;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
@@ -15,7 +16,7 @@ public class PatientTable extends UserTable{
     private String patientIdMedMe;
     @Field("listAppointmentIdsMedMe")
     //key DateTime value appointment id from medme api (GBooking server)
-    private List<Map<String,String>> listMapAppointmentIdsMedMe=new ArrayList<Map<String, String>>();
+    private List<Map<String, AppointmentApiData>> listMapAppointmentIdsMedMe=new ArrayList<Map<String, AppointmentApiData>>();
 
     public boolean isApproved() {
         return approved;
@@ -30,11 +31,11 @@ public class PatientTable extends UserTable{
         this.patientIdMedMe = patientIdMedMe;
     }
 
-    public List<Map<String, String>> getListMapAppointmentIdsMedMe() {
+    public List<Map<String, AppointmentApiData>> getListMapAppointmentIdsMedMe() {
         return listMapAppointmentIdsMedMe;
     }
 
-    public void setListMapAppointmentIdsMedMe(List<Map<String, String>> listMapAppointmentIdsMedMe) {
+    public void setListMapAppointmentIdsMedMe(List<Map<String, AppointmentApiData>> listMapAppointmentIdsMedMe) {
         this.listMapAppointmentIdsMedMe = listMapAppointmentIdsMedMe;
     }
 }

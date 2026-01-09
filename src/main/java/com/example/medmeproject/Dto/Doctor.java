@@ -26,8 +26,8 @@ private List<LocalDateTime> listSchedule=new ArrayList<>();
     public Doctor() {
     }
 
-    public Doctor(String id, String firstName, String lastName, String email, String phoneNumber, LocalDate birthDate, String age, String address, String password, String gender, String role, String healthFund, String identityCard, String specialization, String licenseNumber, Integer yearsOfExperience) {
-        super(id, firstName, lastName, email, phoneNumber, birthDate, address, password, gender, role, healthFund, identityCard);
+    public Doctor(String id, String firstName, String lastName, String email, String phoneNumber, LocalDate birthDate, String age, String address, String gender, String role, String healthFund, String identityCard, String specialization, String licenseNumber, Integer yearsOfExperience) {
+        super(id, firstName, lastName, email, phoneNumber, birthDate, address, gender, role, healthFund, identityCard);
         this.specialization = specialization;
         this.licenseNumber = licenseNumber;
         this.yearsOfExperience = yearsOfExperience;

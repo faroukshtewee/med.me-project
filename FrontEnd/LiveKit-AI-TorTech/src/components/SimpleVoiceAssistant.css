@@ -1,0 +1,249 @@
+/* 
+==================================================
+SimpleVoiceAssistant.css - CONSOLIDATED VERSION
+No duplicate rules, properly organized
+==================================================
+*/
+
+/* ===========================================
+   MAIN CONTAINER
+   =========================================== */
+.voice-assistant-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  height: 100%;
+  position: relative;
+}
+
+/* ===========================================
+   SECURITY BANNER (TOP ALERT)
+   =========================================== */
+.security-banner {
+  /* Position */
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9999;
+  
+  /* Styling */
+  background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+  color: white;
+  padding: 16px 32px;
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(231, 76, 60, 0.4);
+  
+  /* Animation */
+  animation: slideDown 0.3s ease-out, pulse 2s ease-in-out infinite;
+  
+  /* Typography */
+  font-weight: 600;
+  font-size: 16px;
+  text-align: center;
+  letter-spacing: 0.5px;
+  
+  /* Layout */
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  
+  /* Max width to prevent overflow */
+  max-width: 90%;
+}
+
+.security-banner::before {
+  content: "🚨";
+  font-size: 24px;
+  animation: shake 0.5s ease-in-out infinite;
+}
+
+/* ===========================================
+   SECURITY MESSAGE (IN CONVERSATION)
+   =========================================== */
+.message-security {
+  color: #e74c3c !important;
+  font-weight: 600;
+  background: rgba(231, 76, 60, 0.1);
+  padding: 12px;
+  border-radius: 6px;
+  border-left: 4px solid #e74c3c;
+  margin: 10px 0;
+}
+
+.message-security strong {
+  color: #c0392b !important;
+}
+
+/* ===========================================
+   ANIMATIONS
+   =========================================== */
+@keyframes slideDown {
+  from {
+    top: -100px;
+    opacity: 0;
+  }
+  to {
+    top: 20px;
+    opacity: 1;
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    box-shadow: 0 8px 24px rgba(231, 76, 60, 0.4);
+  }
+  50% {
+    box-shadow: 0 8px 32px rgba(231, 76, 60, 0.7);
+  }
+}
+
+@keyframes shake {
+  0%, 100% { 
+    transform: rotate(0deg); 
+  }
+  25% { 
+    transform: rotate(-5deg); 
+  }
+  75% { 
+    transform: rotate(5deg); 
+  }
+}
+
+/* ===========================================
+   VISUALIZER SECTION
+   =========================================== */
+.visualizer-container {
+  width: 100%;
+  max-width: 800px;
+  height: 300px;
+  margin: 0 auto;
+}
+
+.status {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: #666;
+  font-size: 18px;
+  font-weight: 500;
+}
+
+/* ===========================================
+   CONTROL SECTION
+   =========================================== */
+.control-section {
+  width: 100%;
+  max-width: 800px;
+  margin-top: 20px;
+}
+
+/* ===========================================
+   CONVERSATION AREA
+   =========================================== */
+.conversation {
+  padding: 20px;
+  max-height: 300px;
+  overflow-y: auto;
+  width: 100%;
+  height: 100%;
+  border: 1px solid #eaeaea;
+  border-radius: 8px;
+  margin-top: 20px;
+  background-color: #fff;
+  scroll-behavior: smooth;
+}
+
+/* Scrollbar styling */
+.conversation::-webkit-scrollbar {
+  width: 8px;
+}
+
+.conversation::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+.conversation::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
+.conversation::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/* ===========================================
+   MESSAGES
+   =========================================== */
+.message {
+  margin-bottom: 12px;
+  padding: 8px;
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
+}
+
+.message:hover {
+  background-color: #f9f9f9;
+}
+
+.message-agent {
+  color: #4a90e2;
+  font-weight: 600;
+}
+
+.message-user {
+  color: #2ecc71;
+  font-weight: 600;
+}
+
+.message-text {
+  color: #333;
+  line-height: 1.5;
+}
+
+/* ===========================================
+   RESPONSIVE DESIGN
+   =========================================== */
+@media (max-width: 768px) {
+  .voice-assistant-container {
+    padding: 10px;
+  }
+  
+  .security-banner {
+    width: 90%;
+    font-size: 14px;
+    padding: 12px 20px;
+    /* Remove gap on mobile for tighter spacing */
+    gap: 8px;
+  }
+  
+  .security-banner::before {
+    font-size: 20px;
+  }
+  
+  .conversation {
+    max-height: 200px;
+  }
+  
+  .visualizer-container {
+    height: 200px;
+  }
+}
+
+@media (max-width: 480px) {
+  .security-banner {
+    width: 95%;
+    font-size: 12px;
+    padding: 10px 16px;
+  }
+  
+  .message {
+    font-size: 14px;
+  }
+}

@@ -15,8 +15,8 @@ public class Patient extends User {
     public Patient() {
     }
 
-    public Patient(String id, String firstName, String lastName, String email, String phoneNumber, LocalDate birthDate, String age, String address, String password, String gender, String role, String healthFund, String identityCard, LocalDate favoriteDate) {
-        super(id, firstName, lastName, email, phoneNumber, birthDate, address, password, gender, role, healthFund, identityCard);
+    public Patient(String id, String firstName, String lastName, String email, String phoneNumber, LocalDate birthDate, String age, String address, String gender, String role, String healthFund, String identityCard, LocalDate favoriteDate) {
+        super(id, firstName, lastName, email, phoneNumber, birthDate, address, gender, role, healthFund, identityCard);
         this.favoriteDate = favoriteDate;
     }
 
