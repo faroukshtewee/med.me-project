@@ -22,7 +22,7 @@ public class MedMeApiController {
         return medMeApiService.getBusinessesIds(id, token, user, networkId);
     }
     @PostMapping("/search-business-id-by-name")
-    public String searchBusinessesIdByName(@RequestParam int id, @RequestParam String token, @RequestParam String user, @RequestParam boolean skip, @RequestParam String department, @RequestParam String workerSort, @RequestParam int networkId) throws IOException, InterruptedException {
+    public List<Map<String, String>>  searchBusinessesIdByName(@RequestParam int id, @RequestParam String token, @RequestParam String user, @RequestParam boolean skip, @RequestParam String department, @RequestParam String workerSort, @RequestParam int networkId) throws IOException, InterruptedException {
         System.out.printf("Received From python: id: %s ,token: %s ,user: %s ,department: %s ,workerSort: %s ,networkId: %d",id,token,user,department,workerSort,networkId);
         return medMeApiService.searchBusinessesIdByName(id, token, user, skip, department, workerSort, networkId);
     }
@@ -55,7 +55,7 @@ public class MedMeApiController {
         return medMeApiService.searchTaxonomyIdInListTaxonomiesObject(taxonomyName,id,token,user,businessId,skip,workerSort);
     }
     @PostMapping("/search-resource-id-by-name")
-    public String searchResourceIdInListResourcesObject(@RequestParam String resourceName,@RequestParam int id,@RequestParam String token,@RequestParam String user,@RequestParam String businessId,@RequestParam boolean skip,@RequestParam String workerSort) throws IOException, InterruptedException{
+    public  List<Map<String, String>> searchResourceIdInListResourcesObject(@RequestParam String resourceName,@RequestParam int id,@RequestParam String token,@RequestParam String user,@RequestParam String businessId,@RequestParam boolean skip,@RequestParam String workerSort) throws IOException, InterruptedException{
         return medMeApiService.searchResourceIdInListResourcesObject(resourceName,id,token,user,businessId,skip,workerSort);
     }
     @PostMapping("/search-business-taxonomy-time-table")
@@ -87,9 +87,28 @@ public class MedMeApiController {
         return medMeApiService.addPatient(id, token, user, businessId, name, surname, country_code, area_code, number, email);
     }
     @PostMapping("/confirm")
-    public String confirm(@RequestParam int id,@RequestParam String token,@RequestParam String user,@RequestParam String appointmentId,@RequestParam String clientId,@RequestParam String datetime) throws IOException, InterruptedException{
-        System.out.printf("(confirm controller) Received From python: id: %s ,token: %s ,user: %s ,appointmentId: %s ,clientId: %s,datetime: %s",id,token,user,appointmentId,clientId,datetime);
+    public String confirm(@RequestParam int id,@RequestParam String token,@RequestParam String user,@RequestParam String appointmentId,@RequestParam String clientId,@RequestParam String datetime,@RequestParam String businessId,@RequestParam String taxonomyId,@RequestParam String resourcesId) throws IOException, InterruptedException{
+        System.out.printf("(confirm controller) Received From python: id: %s ,token: %s ,user: %s ,appointmentId: %s ,clientId: %s,datetime: %s,businessId: %s,resourcesId: %s,taxonomyId: %s",id,token,user,appointmentId,clientId,datetime,businessId,resourcesId,taxonomyId);
 
-        return medMeApiService.confirm(id, token, user, appointmentId, clientId,datetime);
+        return medMeApiService.confirm(id, token, user, appointmentId, clientId,datetime,businessId,taxonomyId,resourcesId);
+    }
+    @GetMapping("/search-appointment-by-dateTime")
+    public String searchAppointmentIdByDateTime(@RequestParam  String dateTime,@RequestParam String businessId,@RequestParam String taxonomyId,@RequestParam String resourcesId){
+        System.out.printf("(searchAppointmentIdByDateTime controller) Received From python: dateTime: %s ,businessId: %s ,taxonomyId: %s ,resourcesId: %s",dateTime,businessId,taxonomyId,resourcesId);
+        return medMeApiService.searchAppointmentIdByDateTime(dateTime, businessId, taxonomyId,resourcesId);
+    }
+    @GetMapping("/get-client-id-api")
+    public String getClientId(){
+        return medMeApiService.getClientId();
+    }
+    @PostMapping("/cancel-appointment")
+    public String cancelAppointment(@RequestParam int id,@RequestParam  String token,@RequestParam  String user ,@RequestParam  String appointmentId,@RequestParam String clientId) throws IOException, InterruptedException{
+        System.out.printf("(cancelAppointment controller) Received From python: id: %s ,token: %s ,user: %s ,appointmentId: %s ,clientId: %s",id,token,user,appointmentId,clientId);
+        return medMeApiService.cancelAppointment(id, token, user, appointmentId, clientId);
+    }
+    @PostMapping("/unreserve-appointment")
+    public String unReserveAppointment(@RequestParam int id,@RequestParam  String token,@RequestParam  String user ,@RequestParam String appointmentId,@RequestParam String businessId) throws IOException, InterruptedException{
+        System.out.printf("(unReserveAppointment controller) Received From python: id: %s ,token: %s ,user: %s ,appointmentId: %s ,businessId: %s",id,token,user,appointmentId,businessId);
+        return medMeApiService.unReserveAppointment(id, token, user, appointmentId, businessId);
     }
 }
